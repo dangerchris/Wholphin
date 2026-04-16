@@ -69,6 +69,7 @@ import com.github.damontecres.wholphin.ui.components.Button
 import com.github.damontecres.wholphin.ui.components.SelectedLeadingContent
 import com.github.damontecres.wholphin.ui.components.TextButton
 import com.github.damontecres.wholphin.ui.indexOfFirstOrNull
+import com.github.damontecres.wholphin.ui.playback.CurrentPlayback
 import com.github.damontecres.wholphin.ui.playback.ControllerViewState
 import com.github.damontecres.wholphin.ui.playback.PlaybackDialogType
 import com.github.damontecres.wholphin.ui.seekBack
@@ -127,6 +128,7 @@ sealed interface PlaybackAction {
 fun PlaybackControls(
     player: Player,
     controllerViewState: ControllerViewState,
+    currentPlayback: CurrentPlayback?,
     onPlaybackActionClick: (PlaybackAction) -> Unit,
     onClickPlaybackDialogType: (PlaybackDialogType) -> Unit,
     onSeekProgress: (Long) -> Unit,
@@ -175,6 +177,10 @@ fun PlaybackControls(
                 Modifier
                     .padding(vertical = 0.dp)
                     .fillMaxWidth(.95f),
+        )
+        PlaybackStreamBadges(
+            currentPlayback = currentPlayback,
+            modifier = Modifier.padding(start = 8.dp),
         )
         Box(
             modifier =

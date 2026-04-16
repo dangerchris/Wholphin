@@ -194,6 +194,7 @@ fun PlaybackOverlay(
                         nextState = nextState,
                         player = player,
                         controllerViewState = controllerViewState,
+                        currentPlayback = currentPlayback,
                         showPlay = showPlay,
                         previousEnabled = previousEnabled,
                         nextEnabled = nextEnabled,

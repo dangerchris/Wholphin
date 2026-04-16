@@ -35,6 +35,7 @@ import com.github.damontecres.wholphin.ui.PreviewTvSpec
 import com.github.damontecres.wholphin.ui.playback.audioStreamCount
 import com.github.damontecres.wholphin.ui.playback.embeddedSubtitleCount
 import com.github.damontecres.wholphin.ui.playback.externalSubtitlesCount
+import com.github.damontecres.wholphin.ui.data.calculateAspectRatio
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
 import com.github.damontecres.wholphin.ui.util.StreamFormatting.concatWithSpace
 import com.github.damontecres.wholphin.ui.util.StreamFormatting.formatAudioCodec
@@ -102,6 +103,21 @@ fun VideoStreamDetails(
         }
         videoStream?.codec?.uppercase()?.let {
             StreamLabel(it)
+        }
+        val aspectRatio =
+            remember(videoStream) {
+                videoStream?.let {
+                    val width = it.width
+                    val height = it.height
+                    if (width != null && height != null) {
+                        calculateAspectRatio(width, height)
+                    } else {
+                        null
+                    }
+                }
+            }
+        aspectRatio?.let {
+            StreamLabel(text = it)
         }
 
         val audioCount = remember(source) { source?.audioStreamCount ?: 0 }

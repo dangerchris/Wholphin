@@ -34,6 +34,7 @@ import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.data.model.BaseItem
 import com.github.damontecres.wholphin.ui.getTimeFormatter
 import com.github.damontecres.wholphin.ui.playback.ControllerViewState
+import com.github.damontecres.wholphin.ui.playback.CurrentPlayback
 import com.github.damontecres.wholphin.ui.playback.PlaybackDialogType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -49,6 +50,7 @@ fun PlaybackController(
     nextState: OverlayViewState?,
     player: Player,
     controllerViewState: ControllerViewState,
+    currentPlayback: CurrentPlayback?,
     showPlay: Boolean,
     previousEnabled: Boolean,
     nextEnabled: Boolean,
@@ -73,6 +75,7 @@ fun PlaybackController(
             subtitle = item?.subtitleLong,
             player = player,
             controllerViewState = controllerViewState,
+            currentPlayback = currentPlayback,
             showPlay = showPlay,
             previousEnabled = previousEnabled,
             nextEnabled = nextEnabled,
@@ -134,6 +137,7 @@ fun Controller(
     title: String?,
     player: Player,
     controllerViewState: ControllerViewState,
+    currentPlayback: CurrentPlayback?,
     showPlay: Boolean,
     previousEnabled: Boolean,
     nextEnabled: Boolean,
@@ -225,6 +229,7 @@ fun Controller(
         PlaybackControls(
             modifier = Modifier.fillMaxWidth(),
             player = player,
+            currentPlayback = currentPlayback,
             onPlaybackActionClick = onPlaybackActionClick,
             controllerViewState = controllerViewState,
             onSeekProgress = {

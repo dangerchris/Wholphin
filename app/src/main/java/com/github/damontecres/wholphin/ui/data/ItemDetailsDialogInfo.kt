@@ -476,7 +476,7 @@ private fun buildSubtitleStreamInfo(
         }
     }
 
-private fun calculateAspectRatio(
+fun calculateAspectRatio(
     width: Int,
     height: Int,
 ): String {
