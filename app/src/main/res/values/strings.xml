@@ -315,6 +315,7 @@
     <string name="direct_play_ass">Use libass for ASS subtitles</string>
     <string name="direct_play_pgs">Direct play PGS subtitles</string>
     <string name="downmix_stereo">Always downmix to stereo</string>
+    <string name="force_ac3_audio">Transcode AAC/PCM audio to AC3</string>
     <string name="ffmpeg_extension_pref">Use FFmpeg decoder module</string>
     <string name="global_content_scale">Default content scale</string>
     <string name="install_update">Install update</string>

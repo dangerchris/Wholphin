@@ -480,10 +480,21 @@ fun calculateAspectRatio(
     width: Int,
     height: Int,
 ): String {
-    val gcd = gcd(width, height)
-    val w = width / gcd
-    val h = height / gcd
-    return "$w:$h"
+    val ratio = width.toDouble() / height.toDouble()
+    return when {
+        ratio in 1.32..1.35 -> "4:3"
+        ratio in 1.76..1.78 -> "16:9"
+        ratio in 1.84..1.86 -> "1.85:1"
+        ratio in 2.34..2.40 -> "2.39:1"
+        ratio in 2.40..2.60 -> "2.55:1"
+        ratio in 1.42..1.45 -> "1.43:1 (IMAX)"
+        else -> {
+            val gcd = gcd(width, height)
+            val w = width / gcd
+            val h = height / gcd
+            "$w:$h"
+        }
+    }
 }
 
 private fun gcd(

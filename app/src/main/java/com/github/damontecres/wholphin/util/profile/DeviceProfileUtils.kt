@@ -66,6 +66,7 @@ fun createDeviceProfile(
     maxBitrate: Int,
     isAC3Enabled: Boolean,
     downMixAudio: Boolean,
+    forceAc3Audio: Boolean,
     assDirectPlay: Boolean,
     pgsDirectPlay: Boolean,
     dolbyVisionELDirectPlay: Boolean,
@@ -76,6 +77,24 @@ fun createDeviceProfile(
         when {
             downMixAudio -> {
                 downmixSupportedAudioCodecs
+            }
+
+            forceAc3Audio -> {
+                supportedAudioCodecs
+                    .filterNot {
+                        it == Codec.Audio.AAC ||
+                            it == Codec.Audio.AAC_LATM ||
+                            it == Codec.Audio.ALAC ||
+                            it == Codec.Audio.FLAC ||
+                            it == Codec.Audio.OPUS ||
+                            it == Codec.Audio.PCM_ALAW ||
+                            it == Codec.Audio.PCM_MULAW ||
+                            it == Codec.Audio.PCM_S16LE ||
+                            it == Codec.Audio.PCM_S20LE ||
+                            it == Codec.Audio.PCM_S24LE ||
+                            it == Codec.Audio.VORBIS
+                    }
+                    .toTypedArray()
             }
 
             !isAC3Enabled -> {
@@ -156,7 +175,7 @@ fun createDeviceProfile(
         container = Codec.Container.TS
         protocol = MediaStreamProtocol.HLS
 
-        audioCodec(Codec.Audio.AAC)
+        audioCodec(if (forceAc3Audio) Codec.Audio.AC3 else Codec.Audio.AAC)
     }
 
     // / Direct play profiles
