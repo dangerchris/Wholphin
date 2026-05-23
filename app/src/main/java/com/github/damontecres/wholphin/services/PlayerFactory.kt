@@ -18,6 +18,9 @@ import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.Renderer
 import androidx.media3.exoplayer.RenderersFactory
+import androidx.media3.exoplayer.audio.AudioCapabilities
+import androidx.media3.exoplayer.audio.AudioSink
+import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
@@ -29,6 +32,7 @@ import com.github.damontecres.wholphin.preferences.MediaExtensionStatus
 import com.github.damontecres.wholphin.preferences.PlaybackPreferences
 import com.github.damontecres.wholphin.preferences.PlayerBackend
 import com.github.damontecres.wholphin.services.hilt.AuthOkHttpClient
+import com.github.damontecres.wholphin.util.audio.DtsCoreExtractionAudioSink
 import com.github.damontecres.wholphin.util.mpv.MpvPlayer
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.peerless2012.ass.media.AssHandler
@@ -100,9 +104,21 @@ class PlayerFactory
                             }
                         val dataSourceFactory = DefaultDataSource.Factory(context)
                         val extractorsFactory = createExtractorsFactory()
+                        @Suppress("DEPRECATION")
+                        val defaultAudioSink =
+                            DefaultAudioSink
+                                .Builder(context)
+                                .setAudioCapabilities(AudioCapabilities.getCapabilities(context))
+                                .build()
+                        val audioSink = DtsCoreExtractionAudioSink(defaultAudioSink)
                         var renderersFactory: RenderersFactory =
-                            WholphinRenderersFactory(context, decodeAv1)
-                                .setEnableDecoderFallback(true)
+                            object : WholphinRenderersFactory(context, decodeAv1) {
+                                override fun buildAudioSink(
+                                    context: Context,
+                                    enableFloatOutput: Boolean,
+                                    enableAudioTrackPlaybackParams: Boolean,
+                                ): AudioSink = audioSink
+                            }.setEnableDecoderFallback(true)
                                 .setExtensionRendererMode(rendererMode)
                         val mediaSourceFactory =
                             if (useLibAss) {
@@ -228,7 +244,7 @@ data class PlayerCreation(
 )
 
 // Code is adapted from https://github.com/androidx/media/blob/release/libraries/exoplayer/src/main/java/androidx/media3/exoplayer/DefaultRenderersFactory.java#L436
-class WholphinRenderersFactory(
+open class WholphinRenderersFactory(
     context: Context,
     private val av1Enabled: Boolean,
 ) : DefaultRenderersFactory(context) {
