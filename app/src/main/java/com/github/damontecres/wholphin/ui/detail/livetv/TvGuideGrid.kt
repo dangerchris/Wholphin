@@ -212,11 +212,13 @@ fun TvGuideGrid(
                     onDismissRequest = onDismissRequest,
                     onWatch = {
                         onDismissRequest.invoke()
-                        it.data.channelId?.let {
+                        it.data.channelId?.let { channelId ->
+                            val channelNumber = state.channels.find { c -> c.id == channelId }?.number
                             viewModel.navigationManager.navigateTo(
                                 Destination.Playback(
-                                    itemId = it,
+                                    itemId = channelId,
                                     positionMs = 0L,
+                                    channelNumber = channelNumber,
                                 ),
                             )
                         }
@@ -267,6 +269,7 @@ fun TvGuideGrid(
                             Destination.Playback(
                                 itemId = channel.id,
                                 positionMs = 0L,
+                                channelNumber = channel.number,
                             ),
                         )
                     },

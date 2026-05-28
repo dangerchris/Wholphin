@@ -44,6 +44,7 @@ import com.github.damontecres.wholphin.ui.main.SearchPage
 import com.github.damontecres.wholphin.ui.main.settings.HomeSettingsPage
 import com.github.damontecres.wholphin.ui.playback.PlayExternalPage
 import com.github.damontecres.wholphin.ui.playback.PlaybackPage
+import com.github.damontecres.wholphin.ui.playback.TekSavvyTunePage
 import com.github.damontecres.wholphin.ui.preferences.PreferencesPage
 import com.github.damontecres.wholphin.ui.preferences.subtitle.SubtitleStylePage
 import com.github.damontecres.wholphin.ui.setup.InstallUpdatePage
@@ -78,20 +79,27 @@ fun DestinationContent(
         }
 
         is Destination.Playback -> {
-            val backend =
-                destination.backend ?: preferences.appPreferences.playbackPreferences.playerBackend
-            if (backend == PlayerBackend.EXTERNAL_PLAYER) {
-                PlayExternalPage(
-                    preferences = preferences,
-                    destination = destination,
+            if (destination.channelNumber != null) {
+                TekSavvyTunePage(
+                    channelNumber = destination.channelNumber,
                     modifier = modifier,
                 )
             } else {
-                PlaybackPage(
-                    preferences = preferences,
-                    destination = destination,
-                    modifier = modifier,
-                )
+                val backend =
+                    destination.backend ?: preferences.appPreferences.playbackPreferences.playerBackend
+                if (backend == PlayerBackend.EXTERNAL_PLAYER) {
+                    PlayExternalPage(
+                        preferences = preferences,
+                        destination = destination,
+                        modifier = modifier,
+                    )
+                } else {
+                    PlaybackPage(
+                        preferences = preferences,
+                        destination = destination,
+                        modifier = modifier,
+                    )
+                }
             }
         }
 

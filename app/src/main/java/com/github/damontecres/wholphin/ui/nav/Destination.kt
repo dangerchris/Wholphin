@@ -84,6 +84,7 @@ sealed class Destination(
         val positionMs: Long,
         val forceTranscoding: Boolean = false,
         val backend: PlayerBackend? = null,
+        val channelNumber: String? = null,
     ) : Destination(true) {
         constructor(item: BaseItem) : this(item.id, item.resumeMs)
     }
