@@ -42,10 +42,12 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -374,12 +376,13 @@ fun PlaybackButtons(
     seekForward: Duration,
     modifier: Modifier = Modifier,
 ) {
+    val isLtr = LocalLayoutDirection.current == LayoutDirection.Ltr
     Row(
         modifier = modifier.focusGroup(),
         horizontalArrangement = Arrangement.spacedBy(buttonSpacing),
     ) {
         PlaybackButton(
-            iconRes = R.drawable.baseline_skip_previous_24,
+            iconRes = if (isLtr) R.drawable.baseline_skip_previous_24 else R.drawable.baseline_skip_next_24,
             onClick = {
                 onControllerInteraction.invoke()
                 onPlaybackActionClick.invoke(PlaybackAction.Previous)
@@ -388,7 +391,7 @@ fun PlaybackButtons(
             onControllerInteraction = onControllerInteraction,
         )
         PlaybackButton(
-            iconRes = R.drawable.baseline_fast_rewind_24,
+            iconRes = if (isLtr) R.drawable.baseline_fast_rewind_24 else R.drawable.baseline_fast_forward_24,
             onClick = {
                 onControllerInteraction.invoke()
                 player.seekBack(seekBack)
@@ -412,7 +415,7 @@ fun PlaybackButtons(
             onControllerInteraction = onControllerInteraction,
         )
         PlaybackButton(
-            iconRes = R.drawable.baseline_fast_forward_24,
+            iconRes = if (isLtr) R.drawable.baseline_fast_forward_24 else R.drawable.baseline_fast_rewind_24,
             onClick = {
                 onControllerInteraction.invoke()
                 player.seekForward(seekForward)
@@ -420,7 +423,7 @@ fun PlaybackButtons(
             onControllerInteraction = onControllerInteraction,
         )
         PlaybackButton(
-            iconRes = R.drawable.baseline_skip_next_24,
+            iconRes = if (isLtr) R.drawable.baseline_skip_next_24 else R.drawable.baseline_skip_previous_24,
             onClick = {
                 onControllerInteraction.invoke()
                 onPlaybackActionClick.invoke(PlaybackAction.Next)

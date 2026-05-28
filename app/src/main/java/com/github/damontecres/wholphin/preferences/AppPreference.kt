@@ -202,18 +202,6 @@ sealed interface AppPreference<Pref, T> {
                 },
             )
 
-        val CombineContinueNext =
-            AppSwitchPreference<AppPreferences>(
-                title = R.string.combine_continue_next,
-                defaultValue = false,
-                getter = { it.homePagePreferences.combineContinueNext },
-                setter = { prefs, value ->
-                    prefs.updateHomePagePreferences { combineContinueNext = value }
-                },
-                summaryOn = R.string.enabled,
-                summaryOff = R.string.disabled,
-            )
-
         val RewatchNextUp =
             AppSwitchPreference<AppPreferences>(
                 title = R.string.rewatch_next_up,
@@ -715,6 +703,13 @@ sealed interface AppPreference<Pref, T> {
                 summary = R.string.customize_home_summary,
             )
 
+        val UserInterfaceLanguage =
+            AppClickablePreference<AppPreferences>(
+                title = R.string.user_interface_language,
+                getter = { },
+                setter = { prefs, _ -> prefs },
+            )
+
         val SendCrashReports =
             AppSwitchPreference<AppPreferences>(
                 title = R.string.send_crash_reports,
@@ -1121,6 +1116,7 @@ val basicPreferences =
                     AppPreference.ProtectProfilePreference,
                     AppPreference.CustomizeHome,
                     AppPreference.UserPinnedNavDrawerItems,
+                    AppPreference.UserInterfaceLanguage,
                 ),
         ),
         PreferenceGroup(
@@ -1206,7 +1202,6 @@ val advancedPreferences =
                         AppPreference.BackdropStylePref,
                         AppPreference.ShowLogos,
                         AppPreference.ManageMedia,
-                        AppPreference.CombineContinueNext,
                         AppPreference.DisplayTogglesPref,
                         // Temporarily disabled, see https://github.com/damontecres/Wholphin/pull/127#issuecomment-3478058418
 //                    AppPreference.NavDrawerSwitchOnFocus,
