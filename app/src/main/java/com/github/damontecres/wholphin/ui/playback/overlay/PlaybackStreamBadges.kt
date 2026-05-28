@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import com.github.damontecres.wholphin.ui.components.StreamLabel
 import com.github.damontecres.wholphin.ui.data.calculateAspectRatio
@@ -25,7 +25,7 @@ fun PlaybackStreamBadges(
 ) {
     if (currentPlayback == null) return
 
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val mediaStreams = currentPlayback.mediaSourceInfo.mediaStreams.orEmpty()
 
     val videoStream = remember(mediaStreams) {
@@ -61,7 +61,7 @@ fun PlaybackStreamBadges(
                     }
                 val range =
                     formatVideoRange(
-                        context,
+                        resources,
                         stream.videoRange,
                         stream.videoRangeType,
                         stream.videoDoViTitle,
@@ -94,7 +94,7 @@ fun PlaybackStreamBadges(
 
         val audioInfo = remember(audioStream) {
             audioStream?.let { stream ->
-                formatAudioCodecWithChannels(context, stream)
+                formatAudioCodecWithChannels(resources, stream)
             }
         }
         audioInfo?.let {
@@ -104,10 +104,10 @@ fun PlaybackStreamBadges(
 }
 
 private fun formatAudioCodecWithChannels(
-    context: android.content.Context,
+    resources: android.content.res.Resources,
     stream: MediaStream,
 ): String? {
-    val codec = formatAudioCodec(context, stream.codec, stream.profile)
+    val codec = formatAudioCodec(resources, stream.codec, stream.profile)
     val channels = stream.channelLayout
     return listOfNotNull(codec, channels).takeIf { it.isNotEmpty() }?.joinToString(" ")
 }
